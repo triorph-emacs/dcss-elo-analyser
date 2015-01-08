@@ -1,0 +1,42 @@
+There are two main files in this project:
+
+dcss-log-grabber.py
+dcss-log-elo-analyser.py
+
+The default way to run this is to go:
+
+python dcss-log-grabber.py
+python dcss-log-elo-analyser.py
+
+The first of these takes a very long time, and the 2nd takes a reasonably long time to run the first time.
+
+After this has been  done, you can just type:
+
+python dcss-log-elo-analyser.py
+
+with optional choices
+
+python dcss-log-elo-analyser.py char/role/race
+
+At the end it creates a file "eloscores.pickle". This can be opened with the python pickle library (as such):
+
+
+---
+import pickle
+with open("eloscores.pickle", 'r') as f:
+     eloscores = pickle.load(f)
+---
+
+eloscores is a dictionary of characters and players. The "characters" dictionary holds a dictionary of each char/role/race combo (as specified as a commandline argument), containing the full Elo history of that character as it goes against players and compares win rates.
+
+The "players" dictionary has a list of all players and their full Elo update history.
+
+To see the latest Elo of a character/player I have given some examples:
+
+---
+eloscores['players']['miek'][-1]
+eloscores['players']['keymashgrqeeg'][-1]
+eloscores['characters']['MiBe'][-1] # unfortunately these are case sensitive
+eloscores['characters']['MuSu'][-1]
+eloscores['characters']['Mi'][-1] # when race was selected on running the program
+eloscores['characters']['Be'][-1] # when role was selected on running the program.
