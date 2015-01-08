@@ -1,11 +1,20 @@
 import pickle
 import operator
 
+import sys
+chartype = "char"
+if "char" in sys.argv:
+	chartype = "char"
+elif "race" in sys.argv or "species" in sys.argv:
+	chartype = "race"
+elif "class" in sys.argv or "role" in sys.argv or "background" in sys.argv:
+	chartype = "role"
 try:
+	print "Opening previously sorted logs.."
 	with open("sortedlogs.pickle", 'r') as f:
 		data2 = pickle.load(f)
 except:
-
+	print "No logs sorted.. sorting now."
 	with open('dcsslogs.pickle', 'r') as f:
 		logfiles = pickle.load(f)
 
@@ -43,7 +52,7 @@ nameelo = {}
 
 player_counts = {}
 
-k_factor = 32
+k_factor = 20
 
 print "Getting player list"
 for time, name, char, ktyp in data2:
@@ -57,9 +66,15 @@ for time, name, char, ktyp in data2:
 		if ktyp == 'winning':
 			player_counts[name][1] += 1
 
-print "Starting ELO calculations"
+print "Starting ELO calculations for", chartype
 def workout_ELO(charelo_skip = False, nameelo_skip = False):
 	for time, name, char, ktyp in data2:
+		if chartype == "char":
+			char = char
+		elif chartype == "role":
+			char = char[2:4]
+		elif chartype == "race":
+			char = char[0:2]
 		if name not in nameelo:
 			nameelo[name] = [1200.0]
 		if char not in charelo:
