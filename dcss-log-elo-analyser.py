@@ -53,15 +53,16 @@ for time, name, char, ktyp in data2:
 		nameelo[name] = [1200.0]
 	if char not in charelo:
 		charelo[char] = [1729.0] # 4.54% chance of success on average by default
-	if player_counts[name][1] >= 5:
-		probability_of_win = 1.0 / (1.0 + 10.0 ** ((charelo[char][-1] - nameelo[name][-1])/400.0))
-		if ktyp == 'winning':
-			# increase player ELO and decrease char ELO.
-			nameelo[name].append(nameelo[name][-1] + k_factor * (1.0 - probability_of_win))
+	probability_of_win = 1.0 / (1.0 + 10.0 ** ((charelo[char][-1] - nameelo[name][-1])/400.0))
+	if ktyp == 'winning':
+		# increase player ELO and decrease char ELO.
+		nameelo[name].append(nameelo[name][-1] + k_factor * (1.0 - probability_of_win))
+		if player_counts[name][1] >= 5:	# only update char elo if the player is good(ish)
 			charelo[char].append(charelo[char][-1] - k_factor * (1.0 - probability_of_win))
-		else:
-			#decrease player ELO and increase char ELO.
-			nameelo[name].append(nameelo[name][-1] - k_factor * (probability_of_win))
+	else:
+		#decrease player ELO and increase char ELO.
+		nameelo[name].append(nameelo[name][-1] - k_factor * (probability_of_win))
+		if player_counts[name][1] >= 5:	# only update char elo if the player is good(ish)	
 			charelo[char].append(charelo[char][-1] + k_factor * (probability_of_win))
 		
 elo_scores = {"players":nameelo, "characters":charelo}
