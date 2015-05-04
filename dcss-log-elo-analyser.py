@@ -36,7 +36,7 @@ except:
 						except Exception as msg:
 							print msg
 							print keyval
-				if tmp['v'].startswith('0.14') or tmp['v'].startswith('0.15') or tmp['v'].startswith('0.16'):
+				if 'v' in tmp.keys() and (tmp['v'].startswith('0.15') or tmp['v'].startswith('0.16') or tmp['v'].startswith('0.17')):
 					data.append((tmp['end'], tmp['name'], tmp['char'], tmp['ktyp']))
 
 	print "Sorting data by date"
